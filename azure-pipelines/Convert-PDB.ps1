@@ -24,7 +24,7 @@
     if (-not (Test-Path $pdb2pdbpath)) {
         if (-not (Test-Path $baseDir)) { New-Item -Type Directory -Path $baseDir | Out-Null }
         $baseDir = (Resolve-Path $baseDir).Path # Normalize it
-        nuget install Microsoft.DiaSymReader.Pdb2Pdb -version $version -PackageSaveMode nuspec -OutputDirectory $baseDir -Source https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json | Out-Null
+        & (& $PSScriptRoot\Get-NuGetTool.ps1) install Microsoft.DiaSymReader.Pdb2Pdb -version $version -PackageSaveMode nuspec -OutputDirectory $baseDir -Source https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json | Out-Null
     }
 
     $args = $DllPath,'/out',$OutputPath,'/nowarn','0021'

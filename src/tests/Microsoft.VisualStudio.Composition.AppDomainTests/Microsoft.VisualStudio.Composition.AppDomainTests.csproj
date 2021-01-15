@@ -1,9 +1,0 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
-  </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Microsoft.VisualStudio.Composition.AppDomainTests2\Microsoft.VisualStudio.Composition.AppDomainTests2.csproj" />
-    <ProjectReference Include="..\..\Microsoft.VisualStudio.Composition\Microsoft.VisualStudio.Composition.csproj" />
-  </ItemGroup>
-</Project>
