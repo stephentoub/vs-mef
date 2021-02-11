@@ -41,7 +41,7 @@ stages:
   jobs:
   - template: build.yml
     parameters:
-      windowsPool: VSEngSS-MicroBuild2019
+      windowsPool: VSEng-MicroBuildVS2019
       includeMacOS: ${{ parameters.includeMacOS }}
 
 - stage: symbol_archive
