@@ -26,6 +26,9 @@ parameters:
   type: boolean
   default: false # macOS is often bogged down in Azure Pipelines
 
+variables:
+  NugetSecurityAnalysisWarningLevel: none # we use packages.lock.json to verify package content.
+
 stages:
 
 - stage: Build
