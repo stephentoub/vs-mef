@@ -27,7 +27,7 @@ parameters:
   default: false # macOS is often bogged down in Azure Pipelines
 
 variables:
-  NugetSecurityAnalysisWarningLevel: none # we use packages.lock.json to verify package content.
+  NugetSecurityAnalysisWarningLevel: none # nuget.config requires signed packages by trusted owners
 
 stages:
 
