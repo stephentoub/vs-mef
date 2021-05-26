@@ -29,6 +29,13 @@
     Install the MicroBuild signing plugin for building test-signed builds on desktop machines.
 .PARAMETER AccessToken
     An optional access token for authenticating to Azure Artifacts authenticated feeds.
+.PARAMETER Localization
+    Install the MicroBuild localization plugin for building loc builds on desktop machines.
+    The environment is configured to build pseudo-loc for JPN only, but may be used to build
+    all languages with shipping-style loc by using the `/p:loctype=full,loclanguages=vs`
+    when building.
+.PARAMETER IBCMerge
+    Install the MicroBuild IBCMerge plugin for building optimized assemblies on desktop machines.
 #>
 [CmdletBinding(SupportsShouldProcess=$true)]
 Param (
@@ -43,9 +50,11 @@ Param (
     [Parameter()]
     [switch]$Signing,
     [Parameter()]
-    [switch]$OptProf,
+    [string]$AccessToken,
     [Parameter()]
-    [string]$AccessToken
+    [switch]$Localization,
+    [Parameter()]
+    [switch]$IBCMerge
 )
 
 $EnvVars = @{}
@@ -90,7 +99,21 @@ try {
         $EnvVars['SignType'] = "Test"
     }
 
+    if ($Localization) {
+        Write-Host "Installing MicroBuild localization plugin" -ForegroundColor $HeaderColor
+        & $InstallNuGetPkgScriptPath MicroBuild.Plugins.Localization -source $MicroBuildPackageSource -Verbosity $nugetVerbosity
+        $EnvVars['LocType'] = "Pseudo"
+        $EnvVars['LocLanguages'] = "JPN"
+    }
+
+    if ($IBCMerge) {
+        Write-Host "Installing MicroBuild IBCMerge plugin" -ForegroundColor $HeaderColor
+        & "$toolsPath\Install-NuGetPackage.ps1" MicroBuild.Plugins.IBCMerge -source $MicroBuildPackageSource -FallbackSources $VSPackageSource -Verbosity $nugetVerbosity
+        $env:IBCMergeBranch = "master"
+    }
+
     & "$PSScriptRoot/tools/Set-EnvVars.ps1" -Variables $EnvVars | Out-Null
+    Write-Host "Successfully restored all dependencies" -ForegroundColor Yellow
 }
 catch {
     Write-Error $error[0]
